@@ -30,6 +30,18 @@ async function call(path, options = {}) {
   return body;
 }
 
+// Fail early with a clear message if the login does not work.
+try {
+  await call('/users/me?context=edit');
+} catch (err) {
+  console.error('Login to WordPress failed: ' + err.message);
+  console.error('Check that:');
+  console.error('  1. WP_USER is your real WordPress username (not the example text).');
+  console.error('  2. WP_APP_PASSWORD is a real Application Password from Users > Profile (not your normal password).');
+  console.error("  3. wp-config.php has: define( 'WP_ENVIRONMENT_TYPE', 'local' );  (needed for Application Passwords on http).");
+  process.exit(1);
+}
+
 const decode = (s) => s.replace(/&amp;/g, '&');
 
 async function termMap(taxonomy) {
@@ -38,7 +50,7 @@ async function termMap(taxonomy) {
 }
 
 async function findId(type, slug) {
-  const found = await call(`/${type}?slug=${encodeURIComponent(slug)}&status=any`);
+  const found = await call(`/${type}?slug=${encodeURIComponent(slug)}`);
   return found.length > 0 ? found[0].id : null;
 }
 
