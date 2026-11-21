@@ -4,7 +4,7 @@
 // Usage (PowerShell):
 //   $env:WP_API_URL="https://cms.example.com"; $env:WP_USER="admin"; $env:WP_APP_PASSWORD="xxxx xxxx xxxx xxxx"; node scripts/seed-wordpress.mjs
 // Create the application password in WordPress: Users > Profile > Application Passwords.
-// Existing items (same slug) are skipped, so it is safe to run again.
+// Items are matched by slug: new ones are created, existing ones are updated, so it is safe to run again.
 
 import { readFileSync } from 'node:fs';
 
@@ -37,9 +37,16 @@ async function termMap(taxonomy) {
   return new Map(terms.map((t) => [decode(t.name).toLowerCase(), t.id]));
 }
 
-async function exists(type, slug) {
+async function findId(type, slug) {
   const found = await call(`/${type}?slug=${encodeURIComponent(slug)}&status=any`);
-  return found.length > 0;
+  return found.length > 0 ? found[0].id : null;
+}
+
+// Create the item, or update it when the slug already exists.
+async function save(type, slug, payload) {
+  const id = await findId(type, slug);
+  await call(id ? `/${type}/${id}` : `/${type}`, { method: 'POST', body: JSON.stringify(payload) });
+  return id ? 'updated' : 'created';
 }
 
 const industries = await termMap('industries');
@@ -47,45 +54,37 @@ const divisions = await termMap('divisions');
 const productDivision = divisions.get('technology products & saas');
 const serviceDivision = divisions.get('it services & digital solutions');
 
-let created = 0;
-let skipped = 0;
+const counts = { created: 0, updated: 0 };
 
 for (const [i, p] of data.products.entries()) {
-  if (await exists('products', p.slug)) { skipped++; continue; }
   const industry = industries.get(p.industry.toLowerCase());
   if (!industry) throw new Error(`Industry term not found: ${p.industry}. Is the plugin active?`);
-  await call('/products', {
-    method: 'POST',
-    body: JSON.stringify({
-      title: p.title,
-      slug: p.slug,
-      status: 'publish',
-      menu_order: i,
-      industry: [industry],
-      division: productDivision ? [productDivision] : [],
-      meta: { status: p.status, tagline: p.tagline, features: p.features },
-    }),
+  // Taxonomy fields in the REST API use the taxonomy rest_base: "industries" and "divisions".
+  const result = await save('products', p.slug, {
+    title: p.title,
+    slug: p.slug,
+    status: 'publish',
+    menu_order: i,
+    industries: [industry],
+    divisions: productDivision ? [productDivision] : [],
+    meta: { status: p.status, tagline: p.tagline, features: p.features },
   });
-  created++;
-  console.log(`product: ${p.title}`);
+  counts[result]++;
+  console.log(`product (${result}): ${p.title}`);
 }
 
 for (const [i, s] of data.services.entries()) {
-  if (await exists('services', s.slug)) { skipped++; continue; }
-  await call('/services', {
-    method: 'POST',
-    body: JSON.stringify({
-      title: s.title,
-      slug: s.slug,
-      status: 'publish',
-      menu_order: i,
-      excerpt: s.summary,
-      division: serviceDivision ? [serviceDivision] : [],
-      meta: { deliverables: s.deliverables },
-    }),
+  const result = await save('services', s.slug, {
+    title: s.title,
+    slug: s.slug,
+    status: 'publish',
+    menu_order: i,
+    excerpt: s.summary,
+    divisions: serviceDivision ? [serviceDivision] : [],
+    meta: { deliverables: s.deliverables },
   });
-  created++;
-  console.log(`service: ${s.title}`);
+  counts[result]++;
+  console.log(`service (${result}): ${s.title}`);
 }
 
-console.log(`Done. Created ${created}, skipped ${skipped} existing.`);
+console.log(`Done. Created ${counts.created}, updated ${counts.updated}.`);

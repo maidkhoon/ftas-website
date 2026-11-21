@@ -43,7 +43,8 @@ async function fetchProducts(): Promise<Product[]> {
 
   const out: Product[] = [];
   for (const p of posts) {
-    const term = termById.get((p.industry || [])[0]);
+    // The REST field is named after the taxonomy's rest_base, which is "industries".
+    const term = termById.get(((p.industries ?? p.industry) || [])[0]);
     const ind = term && industries.find((i) => i.name.toLowerCase() === term.name.toLowerCase() || i.slug === term.slug);
     if (!ind) {
       console.warn(`[content] Skipping product "${p.slug}": no matching industry`);
