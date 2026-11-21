@@ -1,8 +1,13 @@
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { industries, products as localProducts, type Product, type Status } from '../data/products';
 import { services as localServices, type Service } from '../data/services';
 
-// Content source: WordPress REST API when WP_API_URL is set, otherwise the local data files.
-// Example: WP_API_URL=https://cms.example.com
+// Content source, in order:
+//   1. WordPress REST API, when WP_API_URL is set and reachable (e.g. http://localhost:8080)
+//   2. The last good copy saved in data/wp-snapshot.json (written automatically on every successful load)
+//   3. The built-in data in src/data/
+// So if WordPress is stopped or the network is down, the site keeps the last data it received.
 const base = String(process.env.WP_API_URL || import.meta.env.WP_API_URL || '').replace(/\/+$/, '');
 const api = `${base}/wp-json/wp/v2`;
 
@@ -23,7 +28,7 @@ const text = (html: string) => decode(String(html || '').replace(/<[^>]*>/g, '')
 const lines = (s: unknown) => String(s || '').split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
 
 async function wp<T>(path: string): Promise<T> {
-  const res = await fetch(`${api}${path}`);
+  const res = await fetch(`${api}${path}`, { signal: AbortSignal.timeout(5000) });
   if (!res.ok) throw new Error(`WordPress ${path} returned ${res.status}`);
   return (await res.json()) as T;
 }
@@ -67,35 +72,77 @@ async function fetchServices(): Promise<Service[]> {
   }));
 }
 
-let productsPromise: Promise<Product[]> | undefined;
-let servicesPromise: Promise<Service[]> | undefined;
-
-export function getProducts(): Promise<Product[]> {
-  productsPromise ??= (async () => {
-    if (!base) return localProducts;
-    try {
-      const list = await fetchProducts();
-      if (list.length > 0) return list;
-      console.warn('[content] WordPress returned no products, using local data');
-    } catch (err) {
-      console.warn(`[content] Could not load products from WordPress, using local data: ${(err as Error).message}`);
-    }
-    return localProducts;
-  })();
-  return productsPromise;
+interface Content {
+  products: Product[];
+  services: Service[];
 }
 
-export function getServices(): Promise<Service[]> {
-  servicesPromise ??= (async () => {
-    if (!base) return localServices;
-    try {
-      const list = await fetchServices();
-      if (list.length > 0) return list;
-      console.warn('[content] WordPress returned no services, using local data');
-    } catch (err) {
-      console.warn(`[content] Could not load services from WordPress, using local data: ${(err as Error).message}`);
+const snapshotPath = join(process.cwd(), 'data', 'wp-snapshot.json');
+
+function readSnapshot(): Content | null {
+  try {
+    if (!existsSync(snapshotPath)) return null;
+    const snap = JSON.parse(readFileSync(snapshotPath, 'utf8'));
+    if (Array.isArray(snap.products) && snap.products.length > 0 && Array.isArray(snap.services)) {
+      return { products: snap.products, services: snap.services };
     }
-    return localServices;
-  })();
-  return servicesPromise;
+  } catch (err) {
+    console.warn(`[content] Could not read snapshot: ${(err as Error).message}`);
+  }
+  return null;
+}
+
+function writeSnapshot(content: Content) {
+  // Hosted builds only read the committed snapshot, they never write it.
+  if (process.env.CF_PAGES || process.env.CI) return;
+  try {
+    const next = JSON.stringify(content, null, 2) + '\n';
+    const prev = existsSync(snapshotPath) ? readFileSync(snapshotPath, 'utf8') : '';
+    // Compare ignoring the timestamp so an unchanged load does not touch the file.
+    const strip = (t: string) => t.replace(/"savedAt":\s*"[^"]*",?\s*/, '');
+    if (strip(prev) === strip(next)) return;
+    mkdirSync(dirname(snapshotPath), { recursive: true });
+    writeFileSync(snapshotPath, JSON.stringify({ savedAt: new Date().toISOString(), ...content }, null, 2) + '\n');
+    console.log('[content] Snapshot updated: data/wp-snapshot.json');
+  } catch (err) {
+    console.warn(`[content] Could not write snapshot: ${(err as Error).message}`);
+  }
+}
+
+async function load(): Promise<Content> {
+  const snapshot = readSnapshot();
+  const fallback: Content = snapshot ?? { products: localProducts, services: localServices };
+
+  if (!base) return fallback;
+
+  try {
+    const [products, services] = await Promise.all([fetchProducts(), fetchServices()]);
+    if (products.length === 0) {
+      console.warn('[content] WordPress returned no products, using saved data');
+      return fallback;
+    }
+    const content: Content = { products, services: services.length > 0 ? services : fallback.services };
+    writeSnapshot(content);
+    return content;
+  } catch (err) {
+    console.warn(`[content] WordPress not reachable (${(err as Error).message}), using ${snapshot ? 'saved snapshot' : 'built-in data'}`);
+    return fallback;
+  }
+}
+
+// In dev, re-check WordPress every few seconds so edits show up on refresh. In a build, load once.
+const ttl = import.meta.env.DEV ? 3000 : Infinity;
+let cache: { at: number; data: Promise<Content> } | undefined;
+
+function content(): Promise<Content> {
+  if (!cache || Date.now() - cache.at > ttl) cache = { at: Date.now(), data: load() };
+  return cache.data;
+}
+
+export async function getProducts(): Promise<Product[]> {
+  return (await content()).products;
+}
+
+export async function getServices(): Promise<Service[]> {
+  return (await content()).services;
 }

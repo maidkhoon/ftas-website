@@ -20,16 +20,36 @@ npm run build    # output in dist/
 `functions/api/contact.ts` is a Cloudflare Pages Function. Set the `CONTACT_WEBHOOK_URL` environment variable in Cloudflare Pages.
 
 ## WordPress (headless CMS)
-The site reads products and services from WordPress at build time when `WP_API_URL` is set. If it is not set, or WordPress returns nothing or is unreachable, the build falls back to the local data in `src/data/`, so the site always builds.
 
-1. Copy `wordpress/ftas-content/` to `wp-content/plugins/` on a publicly reachable HTTPS WordPress site and activate it. It adds the `product`, `service` and `case_study` post types and the `industry` and `division` taxonomies (REST: `/wp-json/wp/v2/products`, `/services`, `/industries`).
-2. Fill the data once: in WordPress go to Users > Profile > Application Passwords and create a password, then run (PowerShell):
-   ```
-   $env:WP_API_URL="https://cms.example.com"; $env:WP_USER="admin"; $env:WP_APP_PASSWORD="xxxx xxxx xxxx xxxx"; node scripts/seed-wordpress.mjs
-   ```
-   This imports the 27 products and 6 services from `scripts/seed-data.json`. Existing items are skipped.
-3. In Cloudflare Pages > Settings > Variables, add `WP_API_URL` (the WordPress base URL, no trailing slash) and redeploy.
-4. Product fields in WordPress (Custom Fields panel): `status` (Concept / In development / Live), `tagline`, `features` (one per line). Service fields: excerpt is the summary, `deliverables` (one per line). Set the Industry for every product. Order follows the "Order" attribute.
-5. Auto rebuild on publish: in Cloudflare Pages > Settings > Builds > Deploy hooks create a hook, then add `define( 'FTAS_DEPLOY_HOOK_URL', '<hook url>' );` to `wp-config.php`.
+### How data is loaded
+1. WordPress REST API, when `WP_API_URL` is set and reachable.
+2. Otherwise the last good copy in `data/wp-snapshot.json`. This file is written automatically every time WordPress is read successfully, so the site keeps the last data it received if WordPress is stopped or the network is down.
+3. Otherwise the built-in data in `src/data/`.
 
-Without step 5, trigger a redeploy from Cloudflare after editing content.
+Once `data/wp-snapshot.json` exists it takes priority over `src/data/products.ts` and `src/data/services.ts`. Commit it, so hosted builds (Cloudflare, which cannot reach your localhost) use the same data.
+
+### Local setup (Windows)
+1. Install Local (https://localwp.com) and create a site, or use XAMPP. Open the site's admin and go to Settings > Permalinks > choose "Post name" (needed for `/wp-json`).
+2. Copy the folder `wordpress/ftas-content/` into the WordPress folder `wp-content/plugins/` and activate "FTAS Content Model".
+3. Application password: Users > Profile > Application Passwords. If WordPress refuses it on plain http, add `define( 'WP_ENVIRONMENT_TYPE', 'local' );` to `wp-config.php`.
+4. Import the starting data once (PowerShell, from this project's folder):
+   ```
+   $env:WP_API_URL="http://localhost:8080"; $env:WP_USER="admin"; $env:WP_APP_PASSWORD="xxxx xxxx xxxx xxxx"; node scripts/seed-wordpress.mjs
+   ```
+5. Copy `.env.example` to `.env` and set `WP_API_URL` to your local site URL.
+6. Run `npm run dev`. In dev the site re-checks WordPress every few seconds, so edits show after a refresh.
+
+### Publishing to the live site
+Edit content in local WordPress, check it in `npm run dev`, then commit and push `data/wp-snapshot.json` (and other changes). Cloudflare rebuilds from the snapshot.
+
+```
+git add data/wp-snapshot.json
+git commit -m "Update content"
+git push
+```
+
+### Fields in WordPress
+Product: `status` (Concept / In development / Live), `tagline`, `features` (one per line), and the Industry. Service: excerpt is the summary, `deliverables` (one per line). Order follows the "Order" attribute.
+
+### Using a hosted WordPress later
+Set `WP_API_URL` in Cloudflare Pages > Settings > Variables, and optionally add `define( 'FTAS_DEPLOY_HOOK_URL', '<Cloudflare deploy hook URL>' );` to `wp-config.php` to rebuild on publish.
