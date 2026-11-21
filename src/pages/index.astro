@@ -1,9 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import ProductCard from '../components/ProductCard.astro';
-import { industries, products } from '../data/products';
-import { divisions, services } from '../data/services';
+import { industries } from '../data/products';
+import { divisions } from '../data/services';
+import { getProducts, getServices } from '../lib/content';
 import { site } from '../data/site';
+const products = await getProducts();
+const services = await getServices();
 const featured = products.filter((p) => ['hillbuild-supply', 'hortibee-os', 'vyapaaros'].includes(p.slug));
 ---
 <Base>

@@ -20,7 +20,16 @@ npm run build    # output in dist/
 `functions/api/contact.ts` is a Cloudflare Pages Function. Set the `CONTACT_WEBHOOK_URL` environment variable in Cloudflare Pages.
 
 ## WordPress (headless CMS)
-1. Copy `wordpress/ftas-content/` to `wp-content/plugins/` on the WordPress site and activate it.
-2. It adds the `product`, `service` and `case_study` post types and the `industry` and `division` taxonomies, all exposed in the REST API, for example `https://cms.example.com/wp-json/wp/v2/products`.
-3. Fields (custom fields panel): product `status`, `tagline`, `features`; service `deliverables`.
-4. The frontend currently reads data from `src/data/*.ts`. To switch to WordPress, replace the arrays in those files with a `fetch` to the REST API at build time, and add a WordPress publish webhook that triggers a Cloudflare Pages deploy hook.
+The site reads products and services from WordPress at build time when `WP_API_URL` is set. If it is not set, or WordPress returns nothing or is unreachable, the build falls back to the local data in `src/data/`, so the site always builds.
+
+1. Copy `wordpress/ftas-content/` to `wp-content/plugins/` on a publicly reachable HTTPS WordPress site and activate it. It adds the `product`, `service` and `case_study` post types and the `industry` and `division` taxonomies (REST: `/wp-json/wp/v2/products`, `/services`, `/industries`).
+2. Fill the data once: in WordPress go to Users > Profile > Application Passwords and create a password, then run (PowerShell):
+   ```
+   $env:WP_API_URL="https://cms.example.com"; $env:WP_USER="admin"; $env:WP_APP_PASSWORD="xxxx xxxx xxxx xxxx"; node scripts/seed-wordpress.mjs
+   ```
+   This imports the 27 products and 6 services from `scripts/seed-data.json`. Existing items are skipped.
+3. In Cloudflare Pages > Settings > Variables, add `WP_API_URL` (the WordPress base URL, no trailing slash) and redeploy.
+4. Product fields in WordPress (Custom Fields panel): `status` (Concept / In development / Live), `tagline`, `features` (one per line). Service fields: excerpt is the summary, `deliverables` (one per line). Set the Industry for every product. Order follows the "Order" attribute.
+5. Auto rebuild on publish: in Cloudflare Pages > Settings > Builds > Deploy hooks create a hook, then add `define( 'FTAS_DEPLOY_HOOK_URL', '<hook url>' );` to `wp-config.php`.
+
+Without step 5, trigger a redeploy from Cloudflare after editing content.

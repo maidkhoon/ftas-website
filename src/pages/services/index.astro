@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { services } from '../../data/services';
+import { getServices } from '../../lib/content';
+const services = await getServices();
 ---
 <Base title="IT Services" description="Web, mobile, custom software, cloud, automation and support services from FTAS.">
   <section>

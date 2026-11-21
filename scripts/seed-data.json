@@ -1,0 +1,258 @@
+{
+  "products": [
+    {
+      "slug": "karsog-eco-horti-tech",
+      "title": "Karsog Eco-Horti Tech",
+      "industry": "Agriculture & Horticulture",
+      "tagline": "AI-enabled crop protection and horticulture technology.",
+      "status": "Concept",
+      "features": "Crop monitoring\nDisease identification\nPest alerts\nWeather-related risk information\nFarmer guidance"
+    },
+    {
+      "slug": "hortibee-os",
+      "title": "HortiBee OS",
+      "industry": "Agriculture & Horticulture",
+      "tagline": "Horticulture operations management platform.",
+      "status": "Concept",
+      "features": "Orchard management\nCrop activity tracking\nFarm records\nProduction planning"
+    },
+    {
+      "slug": "laborgrid",
+      "title": "LaborGrid",
+      "industry": "Agriculture & Horticulture",
+      "tagline": "Agricultural labour coordination platform.",
+      "status": "Concept",
+      "features": "Labour availability\nWork assignments\nLabour requirements\nAttendance and payment records"
+    },
+    {
+      "slug": "hortirent",
+      "title": "HortiRent",
+      "industry": "Agriculture & Horticulture",
+      "tagline": "Agricultural equipment rental platform.",
+      "status": "Concept",
+      "features": "Equipment listings\nRental bookings\nAvailability management\nRental transactions"
+    },
+    {
+      "slug": "farmfreeze-os",
+      "title": "FarmFreeze OS",
+      "industry": "Agriculture & Horticulture",
+      "tagline": "Agricultural cold-storage and preservation management.",
+      "status": "Concept",
+      "features": "Storage inventory\nCapacity management\nCold-chain monitoring\nStorage booking"
+    },
+    {
+      "slug": "pahadsoil-ai",
+      "title": "PahadSoil AI",
+      "industry": "Agriculture & Horticulture",
+      "tagline": "Soil intelligence and agricultural recommendation platform.",
+      "status": "Concept",
+      "features": "Soil data records\nSoil health analysis\nCrop suitability recommendations\nFertility monitoring"
+    },
+    {
+      "slug": "mandiprice-predictor",
+      "title": "MandiPrice Predictor",
+      "industry": "Agriculture & Horticulture",
+      "tagline": "Agricultural market price intelligence platform.",
+      "status": "Concept",
+      "features": "Market price tracking\nHistorical price analysis\nPrice trend forecasting\nMarket comparisons"
+    },
+    {
+      "slug": "pahadlogistics",
+      "title": "PahadLogistics",
+      "industry": "Logistics & Transportation",
+      "tagline": "Logistics and goods movement management.",
+      "status": "Concept",
+      "features": "Goods movement management\nShipment tracking\nLogistics coordination"
+    },
+    {
+      "slug": "pahadvahan",
+      "title": "PahadVahan",
+      "industry": "Logistics & Transportation",
+      "tagline": "Vehicle management and transportation platform.",
+      "status": "Concept",
+      "features": "Vehicle management\nTransportation coordination"
+    },
+    {
+      "slug": "boxcartel",
+      "title": "BoxCartel",
+      "industry": "Logistics & Transportation",
+      "tagline": "Packaging and box-related commerce or logistics platform.",
+      "status": "Concept",
+      "features": "Packaging commerce\nBox supply logistics"
+    },
+    {
+      "slug": "scrapos",
+      "title": "ScrapOS",
+      "industry": "Logistics & Transportation",
+      "tagline": "Scrap collection, recycling and material trading management.",
+      "status": "Concept",
+      "features": "Scrap collection\nRecycling management\nMaterial trading"
+    },
+    {
+      "slug": "pahadfuel-shift",
+      "title": "PahadFuel Shift",
+      "industry": "Logistics & Transportation",
+      "tagline": "Fuel-related operations and shift management platform.",
+      "status": "Concept",
+      "features": "Fuel operations\nShift management"
+    },
+    {
+      "slug": "hillcart",
+      "title": "HillCart",
+      "industry": "Logistics & Transportation",
+      "tagline": "A hill-region-focused commerce and delivery platform.",
+      "status": "Concept",
+      "features": "Hill-region commerce\nDelivery management"
+    },
+    {
+      "slug": "pahadstay",
+      "title": "PahadStay",
+      "industry": "Tourism & Hospitality",
+      "tagline": "Accommodation and homestay management platform.",
+      "status": "Concept",
+      "features": "Accommodation management\nHomestay bookings"
+    },
+    {
+      "slug": "homestayleads",
+      "title": "HomestayLeads",
+      "industry": "Tourism & Hospitality",
+      "tagline": "Homestay customer acquisition and lead management platform.",
+      "status": "Concept",
+      "features": "Customer acquisition\nLead management"
+    },
+    {
+      "slug": "karsogtrails",
+      "title": "KarsogTrails",
+      "industry": "Tourism & Hospitality",
+      "tagline": "Tourism, local experiences and trail discovery platform.",
+      "status": "Concept",
+      "features": "Local experiences\nTrail discovery\nTourism information"
+    },
+    {
+      "slug": "vyapaaros",
+      "title": "VyapaarOS",
+      "industry": "Commerce & Business",
+      "tagline": "Business operating system for small businesses and merchants.",
+      "status": "Concept",
+      "features": "Merchant management\nBusiness operations\nReporting"
+    },
+    {
+      "slug": "vyapaar-credit-link",
+      "title": "Vyapaar Credit-Link",
+      "industry": "Commerce & Business",
+      "tagline": "Business credit connectivity and credit workflow platform.",
+      "status": "Concept",
+      "features": "Credit workflow technology\nBusiness credit connectivity"
+    },
+    {
+      "slug": "dhamos",
+      "title": "DhamOS",
+      "industry": "Commerce & Business",
+      "tagline": "Digital operations platform for temple and religious-site administration.",
+      "status": "Concept",
+      "features": "Temple administration\nReligious-site operations"
+    },
+    {
+      "slug": "karsog-dham-network",
+      "title": "Karsog Dham Network",
+      "industry": "Commerce & Business",
+      "tagline": "Digital network connecting religious destinations and related services.",
+      "status": "Concept",
+      "features": "Destination network\nRelated services directory"
+    },
+    {
+      "slug": "pahadweave-b2b",
+      "title": "PahadWeave B2B",
+      "industry": "Commerce & Business",
+      "tagline": "B2B marketplace for textiles, weaving and related businesses.",
+      "status": "Concept",
+      "features": "B2B marketplace\nTextile and weaving trade"
+    },
+    {
+      "slug": "gorgeguard-ai",
+      "title": "GorgeGuard AI",
+      "industry": "Safety & Civic Technology",
+      "tagline": "AI-assisted risk monitoring and safety technology for gorge and hazardous terrain environments.",
+      "status": "Concept",
+      "features": "Risk monitoring\nHazardous terrain safety"
+    },
+    {
+      "slug": "pahadroute-ai",
+      "title": "PahadRoute AI",
+      "industry": "Safety & Civic Technology",
+      "tagline": "Intelligent route information and journey safety platform.",
+      "status": "Concept",
+      "features": "Route information\nJourney safety"
+    },
+    {
+      "slug": "citizenresolve-ai",
+      "title": "CitizenResolve AI",
+      "industry": "Safety & Civic Technology",
+      "tagline": "Civic grievance management and citizen service platform.",
+      "status": "Concept",
+      "features": "Grievance management\nCitizen services"
+    },
+    {
+      "slug": "hillbuild-supply",
+      "title": "HillBuild Supply",
+      "industry": "Construction & Real Estate",
+      "tagline": "Construction materials sourcing and supplier marketplace.",
+      "status": "In development",
+      "features": "Supplier marketplace\nRFQ and quotations\nOrder management"
+    },
+    {
+      "slug": "pahadplot-broker",
+      "title": "PahadPlot Broker",
+      "industry": "Construction & Real Estate",
+      "tagline": "Digital property discovery and brokerage platform.",
+      "status": "Concept",
+      "features": "Property discovery\nBrokerage"
+    },
+    {
+      "slug": "mandiarbitrage",
+      "title": "MandiArbitrage",
+      "industry": "Construction & Real Estate",
+      "tagline": "Market intelligence and opportunity analysis for the Mandi region.",
+      "status": "Concept",
+      "features": "Market intelligence\nOpportunity analysis"
+    }
+  ],
+  "services": [
+    {
+      "slug": "web-development",
+      "title": "Website & Web Application Development",
+      "summary": "Business websites and custom web applications, including WordPress.",
+      "deliverables": "Website development\nWeb application development\nWordPress development"
+    },
+    {
+      "slug": "mobile-development",
+      "title": "Mobile Application Development",
+      "summary": "Cross-platform and Android mobile applications.",
+      "deliverables": "Flutter cross-platform apps\nAndroid development"
+    },
+    {
+      "slug": "custom-software",
+      "title": "Custom Software, ERP & CRM",
+      "summary": "Software built or implemented around your business processes.",
+      "deliverables": "Custom software development\nERP and CRM implementation"
+    },
+    {
+      "slug": "cloud-and-servers",
+      "title": "Cloud Deployment & Linux Administration",
+      "summary": "Reliable hosting, deployment and server administration.",
+      "deliverables": "Cloud deployment\nLinux server administration"
+    },
+    {
+      "slug": "integrations-automation",
+      "title": "API Integration & Business Automation",
+      "summary": "Connect your tools and automate repetitive work.",
+      "deliverables": "API development and integration\nBusiness process automation"
+    },
+    {
+      "slug": "support",
+      "title": "Maintenance & Technical Support",
+      "summary": "Ongoing care for the systems we build.",
+      "deliverables": "Annual maintenance contracts\nMonthly retainers\nTechnical support"
+    }
+  ]
+}

@@ -87,6 +87,21 @@ add_action( 'init', function () {
 	}
 } );
 
+// Optional: rebuild the frontend when content is published.
+// In wp-config.php add: define( 'FTAS_DEPLOY_HOOK_URL', 'https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/...' );
+add_action( 'transition_post_status', function ( $new_status, $old_status, $post ) {
+	if ( ! defined( 'FTAS_DEPLOY_HOOK_URL' ) || ! FTAS_DEPLOY_HOOK_URL ) {
+		return;
+	}
+	if ( ! in_array( $post->post_type, array( 'product', 'service', 'case_study' ), true ) ) {
+		return;
+	}
+	if ( 'publish' !== $new_status && 'publish' !== $old_status ) {
+		return;
+	}
+	wp_remote_post( FTAS_DEPLOY_HOOK_URL, array( 'timeout' => 5, 'blocking' => false ) );
+}, 10, 3 );
+
 // Seed default taxonomy terms once.
 register_activation_hook( __FILE__, function () {
 	do_action( 'init' );

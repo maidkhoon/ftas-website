@@ -1,7 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { services } from '../../data/services';
-export function getStaticPaths() {
+import { getServices } from '../../lib/content';
+export async function getStaticPaths() {
+  const services = await getServices();
   return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
 }
 const { service } = Astro.props;

@@ -1,7 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { industries, products } from '../../data/products';
+import { industries } from '../../data/products';
+import { getProducts } from '../../lib/content';
+const products = await getProducts();
 ---
 <Base title="Products" description="The FTAS product portfolio across agriculture, logistics, tourism, commerce, safety and construction.">
   <section>
