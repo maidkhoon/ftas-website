@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import { products, industryBySlug } from '../../data/products';
+export function getStaticPaths() {
+  return products.map((product) => ({ params: { slug: product.slug }, props: { product } }));
+}
+const { product } = Astro.props;
+const ind = industryBySlug(product.industry);
+---
+<Base title={product.name} description={product.tagline}>
+  <section>
+    <div class="container">
+      <p class="crumbs"><a href="/products">Products</a> / {ind.name}</p>
+      <h1>{product.name}</h1>
+      <p class="lead">{product.tagline}</p>
+      <p><span class="badge">{product.status}</span></p>
+      <h2>Planned capabilities</h2>
+      <ul class="check">{product.features.map((f) => <li>{f}</li>)}</ul>
+      {product.status !== 'Live' && (
+        <p class="notice">This is a product {product.status === 'Concept' ? 'concept' : 'in development'}. It is not yet commercially available.</p>
+      )}
+      <div class="actions">
+        <a class="btn" href={`/contact?product=${product.slug}`}>Register interest</a>
+        <a class="btn ghost" href="/products">All products</a>
+      </div>
+    </div>
+  </section>
+</Base>

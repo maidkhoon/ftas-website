@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { industries, products } from '../data/products';
+import { divisions, services } from '../data/services';
+import { site } from '../data/site';
+const featured = products.filter((p) => ['hillbuild-supply', 'hortibee-os', 'vyapaaros'].includes(p.slug));
+---
+<Base>
+  <div class="hero">
+    <div class="container">
+      <p class="eyebrow">Himachal Pradesh &rarr; India &rarr; Global</p>
+      <h1>{site.tagline}</h1>
+      <p class="lead">{site.short} builds practical, affordable software products, SaaS platforms and IT solutions that digitize traditional industries and automate business operations.</p>
+      <div class="actions">
+        <a class="btn" href="/products">Explore products</a>
+        <a class="btn ghost" href="/contact">Talk to us</a>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <h2>What we do</h2>
+      <p class="lead">Three connected divisions under one technology company.</p>
+      <div class="grid cols-3">
+        {divisions.map((d) => (
+          <div class="card"><h3><a href={d.href}>{d.name}</a></h3><p>{d.text}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="soft">
+    <div class="container">
+      <h2>Industries we serve</h2>
+      <div class="grid cols-3">
+        {industries.map((i) => (
+          <div class="card" style={`--c:${i.color}`}>
+            <h3><a href={`/products?industry=${i.slug}`}>{i.name}</a></h3>
+            <p>{i.blurb}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Priority products</h2>
+      <p class="lead">Our first focus products, built on shared FTAS infrastructure.</p>
+      <div class="grid cols-3">{featured.map((p) => <ProductCard product={p} />)}</div>
+      <div class="actions"><a class="btn ghost" href="/products">View all {products.length} products</a></div>
+    </div>
+  </section>
+
+  <section class="soft">
+    <div class="container">
+      <h2>IT services</h2>
+      <div class="grid cols-3">
+        {services.map((s) => (
+          <div class="card"><h3><a href={`/services/${s.slug}`}>{s.name}</a></h3><p>{s.summary}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Have a problem worth solving with software?</h2>
+      <p class="lead">Tell us about your business and we will suggest a practical way forward.</p>
+      <div class="actions"><a class="btn" href="/contact">Get a quote</a></div>
+    </div>
+  </section>
+</Base>

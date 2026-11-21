@@ -1,0 +1,78 @@
+---
+import '../styles/global.css';
+import { site, nav } from '../data/site';
+import { industries } from '../data/products';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description = site.description } = Astro.props;
+const fullTitle = title ? `${title} | ${site.short}` : `${site.name} (${site.short}) - ${site.tagline}`;
+const path = Astro.url.pathname;
+const canonical = new URL(path, Astro.site).href;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  alternateName: site.short,
+  url: Astro.site?.href,
+  description: site.description,
+  areaServed: 'IN',
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <header class="site">
+      <div class="container">
+        <a class="logo" href="/">{site.short}</a>
+        <nav aria-label="Main">
+          <ul>
+            {nav.map((n) => (
+              <li><a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main><slot /></main>
+    <footer class="site">
+      <div class="container">
+        <div class="cols">
+          <div>
+            <h4>{site.name}</h4>
+            <p>{site.tagline}</p>
+            <p>{site.location}</p>
+          </div>
+          <div>
+            <h4>Industries</h4>
+            <ul>{industries.map((i) => <li><a href={`/products?industry=${i.slug}`}>{i.name}</a></li>)}</ul>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <ul>
+              {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+              <li><a href="/privacy">Privacy Policy</a></li>
+              <li><a href="/terms">Terms</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="legal">&copy; {new Date().getFullYear()} {site.name}. Products listed are concepts unless marked Live.</div>
+      </div>
+    </footer>
+  </body>
+</html>

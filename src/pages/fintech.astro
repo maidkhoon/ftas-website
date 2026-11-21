@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+const items = ['Payment integrations', 'Business transaction management', 'Financial reporting', 'Digital invoicing', 'Credit-related workflow technology', 'Financial data integrations', 'Reconciliation and settlement tools'];
+---
+<Base title="Fintech" description="Software infrastructure for financial workflows and business transactions.">
+  <section>
+    <div class="container">
+      <h1>Fintech &amp; Financial Technology</h1>
+      <p class="lead">Technology for financial workflows and business transactions.</p>
+      <h2>Potential products and services</h2>
+      <ul class="check">{items.map((i) => <li>{i}</li>)}</ul>
+      <p class="notice">FTAS provides software infrastructure. Regulated financial activities such as lending, payment aggregation, investment advice or holding money are undertaken only through appropriate authorizations and compliant partners.</p>
+      <div class="actions"><a class="btn" href="/contact">Discuss a requirement</a></div>
+    </div>
+  </section>
+</Base>

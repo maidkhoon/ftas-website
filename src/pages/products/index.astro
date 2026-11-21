@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { industries, products } from '../../data/products';
+---
+<Base title="Products" description="The FTAS product portfolio across agriculture, logistics, tourism, commerce, safety and construction.">
+  <section>
+    <div class="container">
+      <h1>Products</h1>
+      <p class="lead">{products.length} product concepts across six industries. Status shows where each one stands today.</p>
+      <div class="filters" id="filters">
+        <button class="active" data-f="all">All</button>
+        {industries.map((i) => <button data-f={i.slug}>{i.name}</button>)}
+      </div>
+      <div class="grid cols-2" id="list">{products.map((p) => <ProductCard product={p} />)}</div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('#filters button');
+  const cards = document.querySelectorAll<HTMLElement>('#list .card');
+  function apply(f: string) {
+    buttons.forEach((b) => b.classList.toggle('active', b.dataset.f === f));
+    cards.forEach((c) => { c.style.display = f === 'all' || c.dataset.industry === f ? '' : 'none'; });
+  }
+  buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.f || 'all')));
+  const q = new URLSearchParams(location.search).get('industry');
+  if (q) apply(q);
+</script>

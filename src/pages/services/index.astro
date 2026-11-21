@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import { services } from '../../data/services';
+---
+<Base title="IT Services" description="Web, mobile, custom software, cloud, automation and support services from FTAS.">
+  <section>
+    <div class="container">
+      <h1>IT Services &amp; Digital Solutions</h1>
+      <p class="lead">Fixed-price projects, hourly development, monthly retainers and annual maintenance.</p>
+      <div class="grid cols-2">
+        {services.map((s) => (
+          <div class="card"><h3><a href={`/services/${s.slug}`}>{s.name}</a></h3><p>{s.summary}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

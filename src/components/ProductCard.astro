@@ -1,0 +1,13 @@
+---
+import type { Product } from '../data/products';
+import { industryBySlug } from '../data/products';
+interface Props { product: Product }
+const { product } = Astro.props;
+const ind = industryBySlug(product.industry);
+const cls = product.status === 'Live' ? 'live' : product.status === 'In development' ? 'dev' : '';
+---
+<article class="card" style={`--c:${ind.color}`} data-industry={product.industry}>
+  <span class={`badge ${cls}`}>{product.status}</span>
+  <h3><a href={`/products/${product.slug}`}>{product.name}</a></h3>
+  <p>{product.tagline}</p>
+</article>

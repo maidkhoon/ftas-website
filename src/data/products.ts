@@ -1,0 +1,64 @@
+export type Status = 'Concept' | 'In development' | 'Live';
+
+export interface Industry {
+  slug: string;
+  name: string;
+  color: string;
+  blurb: string;
+}
+
+export interface Product {
+  slug: string;
+  name: string;
+  industry: string;
+  tagline: string;
+  features: string[];
+  status: Status;
+}
+
+export const industries: Industry[] = [
+  { slug: 'agriculture', name: 'Agriculture & Horticulture', color: '#2f855a', blurb: 'Technology for farmers, orchards and the agricultural supply chain.' },
+  { slug: 'logistics', name: 'Logistics & Transportation', color: '#2b6cb0', blurb: 'Goods movement, vehicles and material trading for hill regions.' },
+  { slug: 'tourism', name: 'Tourism & Hospitality', color: '#c05621', blurb: 'Stays, leads and local experiences for tourism businesses.' },
+  { slug: 'commerce', name: 'Commerce & Business', color: '#6b46c1', blurb: 'Operating systems and marketplaces for merchants and institutions.' },
+  { slug: 'safety', name: 'Safety & Civic Technology', color: '#c53030', blurb: 'Risk monitoring, route safety and citizen services.' },
+  { slug: 'construction', name: 'Construction & Real Estate', color: '#975a16', blurb: 'Materials sourcing, property discovery and market intelligence.' },
+];
+
+export const products: Product[] = [
+  // Agriculture & Horticulture
+  { slug: 'karsog-eco-horti-tech', name: 'Karsog Eco-Horti Tech', industry: 'agriculture', tagline: 'AI-enabled crop protection and horticulture technology.', features: ['Crop monitoring', 'Disease identification', 'Pest alerts', 'Weather-related risk information', 'Farmer guidance'], status: 'Concept' },
+  { slug: 'hortibee-os', name: 'HortiBee OS', industry: 'agriculture', tagline: 'Horticulture operations management platform.', features: ['Orchard management', 'Crop activity tracking', 'Farm records', 'Production planning'], status: 'Concept' },
+  { slug: 'laborgrid', name: 'LaborGrid', industry: 'agriculture', tagline: 'Agricultural labour coordination platform.', features: ['Labour availability', 'Work assignments', 'Labour requirements', 'Attendance and payment records'], status: 'Concept' },
+  { slug: 'hortirent', name: 'HortiRent', industry: 'agriculture', tagline: 'Agricultural equipment rental platform.', features: ['Equipment listings', 'Rental bookings', 'Availability management', 'Rental transactions'], status: 'Concept' },
+  { slug: 'farmfreeze-os', name: 'FarmFreeze OS', industry: 'agriculture', tagline: 'Agricultural cold-storage and preservation management.', features: ['Storage inventory', 'Capacity management', 'Cold-chain monitoring', 'Storage booking'], status: 'Concept' },
+  { slug: 'pahadsoil-ai', name: 'PahadSoil AI', industry: 'agriculture', tagline: 'Soil intelligence and agricultural recommendation platform.', features: ['Soil data records', 'Soil health analysis', 'Crop suitability recommendations', 'Fertility monitoring'], status: 'Concept' },
+  { slug: 'mandiprice-predictor', name: 'MandiPrice Predictor', industry: 'agriculture', tagline: 'Agricultural market price intelligence platform.', features: ['Market price tracking', 'Historical price analysis', 'Price trend forecasting', 'Market comparisons'], status: 'Concept' },
+  // Logistics & Transportation
+  { slug: 'pahadlogistics', name: 'PahadLogistics', industry: 'logistics', tagline: 'Logistics and goods movement management.', features: ['Goods movement management', 'Shipment tracking', 'Logistics coordination'], status: 'Concept' },
+  { slug: 'pahadvahan', name: 'PahadVahan', industry: 'logistics', tagline: 'Vehicle management and transportation platform.', features: ['Vehicle management', 'Transportation coordination'], status: 'Concept' },
+  { slug: 'boxcartel', name: 'BoxCartel', industry: 'logistics', tagline: 'Packaging and box-related commerce or logistics platform.', features: ['Packaging commerce', 'Box supply logistics'], status: 'Concept' },
+  { slug: 'scrapos', name: 'ScrapOS', industry: 'logistics', tagline: 'Scrap collection, recycling and material trading management.', features: ['Scrap collection', 'Recycling management', 'Material trading'], status: 'Concept' },
+  { slug: 'pahadfuel-shift', name: 'PahadFuel Shift', industry: 'logistics', tagline: 'Fuel-related operations and shift management platform.', features: ['Fuel operations', 'Shift management'], status: 'Concept' },
+  { slug: 'hillcart', name: 'HillCart', industry: 'logistics', tagline: 'A hill-region-focused commerce and delivery platform.', features: ['Hill-region commerce', 'Delivery management'], status: 'Concept' },
+  // Tourism & Hospitality
+  { slug: 'pahadstay', name: 'PahadStay', industry: 'tourism', tagline: 'Accommodation and homestay management platform.', features: ['Accommodation management', 'Homestay bookings'], status: 'Concept' },
+  { slug: 'homestayleads', name: 'HomestayLeads', industry: 'tourism', tagline: 'Homestay customer acquisition and lead management platform.', features: ['Customer acquisition', 'Lead management'], status: 'Concept' },
+  { slug: 'karsogtrails', name: 'KarsogTrails', industry: 'tourism', tagline: 'Tourism, local experiences and trail discovery platform.', features: ['Local experiences', 'Trail discovery', 'Tourism information'], status: 'Concept' },
+  // Commerce & Business
+  { slug: 'vyapaaros', name: 'VyapaarOS', industry: 'commerce', tagline: 'Business operating system for small businesses and merchants.', features: ['Merchant management', 'Business operations', 'Reporting'], status: 'Concept' },
+  { slug: 'vyapaar-credit-link', name: 'Vyapaar Credit-Link', industry: 'commerce', tagline: 'Business credit connectivity and credit workflow platform.', features: ['Credit workflow technology', 'Business credit connectivity'], status: 'Concept' },
+  { slug: 'dhamos', name: 'DhamOS', industry: 'commerce', tagline: 'Digital operations platform for temple and religious-site administration.', features: ['Temple administration', 'Religious-site operations'], status: 'Concept' },
+  { slug: 'karsog-dham-network', name: 'Karsog Dham Network', industry: 'commerce', tagline: 'Digital network connecting religious destinations and related services.', features: ['Destination network', 'Related services directory'], status: 'Concept' },
+  { slug: 'pahadweave-b2b', name: 'PahadWeave B2B', industry: 'commerce', tagline: 'B2B marketplace for textiles, weaving and related businesses.', features: ['B2B marketplace', 'Textile and weaving trade'], status: 'Concept' },
+  // Safety & Civic Technology
+  { slug: 'gorgeguard-ai', name: 'GorgeGuard AI', industry: 'safety', tagline: 'AI-assisted risk monitoring and safety technology for gorge and hazardous terrain environments.', features: ['Risk monitoring', 'Hazardous terrain safety'], status: 'Concept' },
+  { slug: 'pahadroute-ai', name: 'PahadRoute AI', industry: 'safety', tagline: 'Intelligent route information and journey safety platform.', features: ['Route information', 'Journey safety'], status: 'Concept' },
+  { slug: 'citizenresolve-ai', name: 'CitizenResolve AI', industry: 'safety', tagline: 'Civic grievance management and citizen service platform.', features: ['Grievance management', 'Citizen services'], status: 'Concept' },
+  // Construction & Real Estate
+  { slug: 'hillbuild-supply', name: 'HillBuild Supply', industry: 'construction', tagline: 'Construction materials sourcing and supplier marketplace.', features: ['Supplier marketplace', 'RFQ and quotations', 'Order management'], status: 'In development' },
+  { slug: 'pahadplot-broker', name: 'PahadPlot Broker', industry: 'construction', tagline: 'Digital property discovery and brokerage platform.', features: ['Property discovery', 'Brokerage'], status: 'Concept' },
+  { slug: 'mandiarbitrage', name: 'MandiArbitrage', industry: 'construction', tagline: 'Market intelligence and opportunity analysis for the Mandi region.', features: ['Market intelligence', 'Opportunity analysis'], status: 'Concept' },
+];
+
+export const industryBySlug = (slug: string) => industries.find((i) => i.slug === slug)!;

@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+const values = ['Innovation', 'Accessibility', 'Transparency', 'Affordability', 'Sustainability', 'Security and privacy', 'Customer-first development', 'Long-term technology ownership'];
+const mission = [
+  'Develop practical and affordable technology products.',
+  'Digitize traditional and underserved industries.',
+  'Automate business operations.',
+  'Improve access to financial and digital services.',
+  'Support local entrepreneurs, farmers and businesses.',
+  'Build scalable technology infrastructure.',
+  'Integrate AI and automation wherever they create measurable value.',
+];
+const phases = [
+  { t: 'Phase 1: Himachal Pradesh', d: 'Understand local problems, build MVPs, run pilots and collect real usage feedback in Karsog, Mandi, Shimla and other districts.' },
+  { t: 'Phase 2: Pan-India', d: 'After product-market validation, expand to other states with regional language support and channel partnerships.' },
+  { t: 'Phase 3: Global', d: 'Expand product by product, only where demand is proven, with localization and applicable compliance.' },
+];
+---
+<Base title="About" description="Vision, mission and values of Fintech Automated Solutions (FTAS).">
+  <section>
+    <div class="container">
+      <h1>About FTAS</h1>
+      <p class="lead">A hybrid technology company combining software products, SaaS, IT services and financial technology.</p>
+      <h2>Vision</h2>
+      <p>To become a globally recognized technology company that builds interconnected digital products and intelligent software solutions for businesses, individuals and communities.</p>
+      <h2>Mission</h2>
+      <ul class="check">{mission.map((m) => <li>{m}</li>)}</ul>
+    </div>
+  </section>
+  <section class="soft">
+    <div class="container">
+      <h2>Core values</h2>
+      <div class="grid cols-3">{values.map((v) => <div class="card"><h3>{v}</h3></div>)}</div>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <h2>How we grow</h2>
+      <div class="grid cols-3">{phases.map((p) => <div class="card"><h3>{p.t}</h3><p>{p.d}</p></div>)}</div>
+      <p style="margin-top:1.5rem">We validate real customer demand before expanding any product.</p>
+    </div>
+  </section>
+</Base>
