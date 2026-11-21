@@ -3,7 +3,7 @@ export const site = {
   short: 'FTAS',
   tagline: 'Technology for Businesses, Industries and Communities.',
   description: 'FTAS builds software products, SaaS platforms, IT services and financial technology, starting in Himachal Pradesh.',
-  email: 'hello@example.com',
+  email: 'maidkhoon@gmail.com',
   location: 'Himachal Pradesh, India',
 };
 
